@@ -152,11 +152,11 @@ export function HeroSection({ onExplore, onChatOpen }: HeroSectionProps) {
               
               {/* Main image container */}
               <div className="relative rounded-3xl overflow-hidden border border-border bg-card shadow-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1518331647614-7a1f04cd34cf?w=800&h=800&fit=crop"
-                  alt="Colección de minerales y cristales"
-                  className="w-full h-full object-cover"
-                />
+                 <img
+                   src="/WhatsApp Image 2026-06-03 at 08.49.39.jpeg"
+                   alt="Colección de minerales y cristales"
+                   className="w-full h-full object-cover"
+                 />
                 
                 {/* Overlay gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
