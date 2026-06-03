@@ -18,6 +18,8 @@ export interface Mineral {
   elongation: string
   alteration: string
   distinctiveTraits: string
+  refractiveIndex?: string
+  observations?: string
   paragenesis: string
   hardness: string
   density: string

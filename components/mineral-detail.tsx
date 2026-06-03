@@ -1,7 +1,19 @@
 "use client"
 
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Gem, FlaskConical, Hexagon, Palette, Eye, Sparkles, Mountain, Layers, GitBranch } from "lucide-react"
+import {
+  X,
+  Gem,
+  FlaskConical,
+  Hexagon,
+  Palette,
+  Eye,
+  Sparkles,
+  Mountain,
+  Layers,
+  GitBranch,
+  Compass,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { MineralImage } from "@/components/mineral-image"
 import type { Mineral } from "@/lib/types"
@@ -17,9 +29,10 @@ interface PropertyCardProps {
   label: string
   value: string
   color?: string
+  fullWidth?: boolean
 }
 
-function PropertyCard({ icon, label, value, color = "primary" }: PropertyCardProps) {
+function PropertyCard({ icon, label, value, color = "primary", fullWidth }: PropertyCardProps) {
   const colorClasses: Record<string, string> = {
     primary: "bg-primary/10 text-primary border-primary/20",
     secondary: "bg-secondary/10 text-secondary border-secondary/20",
@@ -27,25 +40,37 @@ function PropertyCard({ icon, label, value, color = "primary" }: PropertyCardPro
     muted: "bg-muted text-muted-foreground border-border",
   }
 
+  const displayValue = value?.trim() ? value : "Sin dato registrado"
+
   return (
-    <div className="p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors">
+    <div
+      className={`p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors${fullWidth ? " md:col-span-2" : ""}`}
+    >
       <div className="flex items-start gap-3">
         <div className={`p-2 rounded-lg ${colorClasses[color]}`}>
           {icon}
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{label}</p>
-          <p className="text-sm text-foreground leading-relaxed">{value}</p>
+          <p className="text-sm text-foreground leading-relaxed">{displayValue}</p>
         </div>
       </div>
     </div>
   )
 }
 
+function SectionTitle({ children, icon }: { children: React.ReactNode; icon: React.ReactNode }) {
+  return (
+    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
+      {icon}
+      {children}
+    </h3>
+  )
+}
+
 export function MineralDetail({ mineral, isOpen, onClose }: MineralDetailProps) {
   if (!mineral) return null
 
-  // Generate gradient based on mineral color
   const getGradient = (color: string) => {
     const colorLower = color.toLowerCase()
     if (colorLower.includes("verde")) return "from-emerald-900/30 to-teal-900/10"
@@ -60,7 +85,6 @@ export function MineralDetail({ mineral, isOpen, onClose }: MineralDetailProps) 
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -69,7 +93,6 @@ export function MineralDetail({ mineral, isOpen, onClose }: MineralDetailProps) 
             className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50"
           />
 
-          {/* Panel */}
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
@@ -77,7 +100,6 @@ export function MineralDetail({ mineral, isOpen, onClose }: MineralDetailProps) 
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className="fixed inset-0 sm:inset-y-0 sm:left-auto sm:right-0 w-full sm:max-w-2xl bg-card sm:border-l border-border shadow-2xl z-50 overflow-y-auto overscroll-contain"
           >
-            {/* Header */}
             <div className={`sticky top-0 z-10 border-b border-border pt-[env(safe-area-inset-top)]`}>
               <div className="relative">
                 <MineralImage mineral={mineral} className="relative h-40 sm:h-48" priority />
@@ -91,7 +113,7 @@ export function MineralDetail({ mineral, isOpen, onClose }: MineralDetailProps) 
                 </Button>
               </div>
               <div className={`p-4 sm:p-6 bg-gradient-to-br ${getGradient(mineral.color)}`}>
-                <div className="flex items-center gap-3 sm:gap-4 min-w-0 mb-4 sm:mb-6">
+                <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                   <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-card/80 backdrop-blur-sm border border-border flex items-center justify-center flex-shrink-0">
                     <Gem className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
                   </div>
@@ -102,34 +124,52 @@ export function MineralDetail({ mineral, isOpen, onClose }: MineralDetailProps) 
                     <h2 className="text-xl sm:text-2xl font-bold text-foreground">{mineral.name}</h2>
                   </div>
                 </div>
-
-                {/* Formula highlight */}
-                <div className="flex items-center gap-3 p-4 rounded-xl bg-card/50 backdrop-blur-sm border border-border/50">
-                  <FlaskConical className="w-5 h-5 text-primary" />
-                  <span className="font-mono text-lg text-foreground">{mineral.formula}</span>
-                </div>
               </div>
             </div>
 
-            {/* Content */}
-            <div className="p-4 sm:p-6 space-y-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
-              {/* Crystallographic properties */}
+            <div className="p-4 sm:p-6 space-y-8 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+              {/* Composición química, sistema cristalino y relación Si:O */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <PropertyCard
+                  icon={<FlaskConical className="w-4 h-4" />}
+                  label="Composición química"
+                  value={mineral.formula}
+                  color="primary"
+                />
+                <PropertyCard
+                  icon={<Hexagon className="w-4 h-4" />}
+                  label="Sistema cristalino"
+                  value={mineral.crystallineSystem}
+                  color="secondary"
+                />
+                <PropertyCard
+                  icon={<GitBranch className="w-4 h-4" />}
+                  label="Relación Silicio:Oxígeno"
+                  value={mineral.siORatio}
+                  color="muted"
+                />
+              </div>
+
+              {/* Propiedades ópticas */}
               <div>
-                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                  <Hexagon className="w-4 h-4" />
-                  Propiedades Cristalográficas
-                </h3>
+                <SectionTitle icon={<Eye className="w-4 h-4" />}>Propiedades Ópticas</SectionTitle>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <PropertyCard
-                    icon={<Hexagon className="w-4 h-4" />}
-                    label="Sistema Cristalino"
-                    value={mineral.crystallineSystem}
-                    color="secondary"
+                    icon={<Eye className="w-4 h-4" />}
+                    label="Índices de refracción"
+                    value={mineral.refractiveIndex ?? ""}
+                    color="muted"
                   />
                   <PropertyCard
-                    icon={<GitBranch className="w-4 h-4" />}
-                    label="Relación Si:O"
-                    value={mineral.siORatio}
+                    icon={<Palette className="w-4 h-4" />}
+                    label="Color"
+                    value={mineral.color}
+                    color="accent"
+                  />
+                  <PropertyCard
+                    icon={<Eye className="w-4 h-4" />}
+                    label="Relieve"
+                    value={mineral.relief}
                     color="muted"
                   />
                   <PropertyCard
@@ -150,34 +190,6 @@ export function MineralDetail({ mineral, isOpen, onClose }: MineralDetailProps) 
                     value={mineral.twinning}
                     color="muted"
                   />
-                </div>
-              </div>
-
-              {/* Optical properties */}
-              <div>
-                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                  <Eye className="w-4 h-4" />
-                  Propiedades Ópticas
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <PropertyCard
-                    icon={<Palette className="w-4 h-4" />}
-                    label="Color"
-                    value={mineral.color}
-                    color="accent"
-                  />
-                  <PropertyCard
-                    icon={<Eye className="w-4 h-4" />}
-                    label="Pleocroísmo"
-                    value={mineral.pleochroism}
-                    color="primary"
-                  />
-                  <PropertyCard
-                    icon={<Eye className="w-4 h-4" />}
-                    label="Relieve"
-                    value={mineral.relief}
-                    color="muted"
-                  />
                   <PropertyCard
                     icon={<Sparkles className="w-4 h-4" />}
                     label="Birrefringencia"
@@ -186,15 +198,21 @@ export function MineralDetail({ mineral, isOpen, onClose }: MineralDetailProps) 
                   />
                   <PropertyCard
                     icon={<Palette className="w-4 h-4" />}
-                    label="Colores de Interferencia"
+                    label="Color de interferencia"
                     value={mineral.interferenceColors}
                     color="accent"
                   />
                   <PropertyCard
                     icon={<Eye className="w-4 h-4" />}
-                    label="Carácter Óptico"
+                    label="Carácter óptico y signo óptico"
                     value={mineral.opticalCharacter}
                     color="secondary"
+                  />
+                  <PropertyCard
+                    icon={<Compass className="w-4 h-4" />}
+                    label="Orientación"
+                    value={mineral.elongation}
+                    color="muted"
                   />
                   <PropertyCard
                     icon={<Eye className="w-4 h-4" />}
@@ -203,67 +221,35 @@ export function MineralDetail({ mineral, isOpen, onClose }: MineralDetailProps) 
                     color="muted"
                   />
                   <PropertyCard
-                    icon={<Eye className="w-4 h-4" />}
-                    label="Elongación"
-                    value={mineral.elongation}
-                    color="muted"
-                  />
-                </div>
-              </div>
-
-              {/* Physical properties */}
-              <div>
-                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                  <Mountain className="w-4 h-4" />
-                  Propiedades Físicas y Geológicas
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <PropertyCard
-                    icon={<Gem className="w-4 h-4" />}
-                    label="Dureza"
-                    value={mineral.hardness}
-                    color="primary"
-                  />
-                  <PropertyCard
-                    icon={<Gem className="w-4 h-4" />}
-                    label="Densidad"
-                    value={mineral.density}
-                    color="muted"
-                  />
-                  <PropertyCard
-                    icon={<Mountain className="w-4 h-4" />}
-                    label="Ambiente Geológico"
-                    value={mineral.geologicalEnvironment}
-                    color="secondary"
-                  />
-                  <PropertyCard
                     icon={<Sparkles className="w-4 h-4" />}
                     label="Alteración"
                     value={mineral.alteration}
                     color="muted"
                   />
+                  <PropertyCard
+                    icon={<Sparkles className="w-4 h-4" />}
+                    label="Rasgos distintivos"
+                    value={mineral.distinctiveTraits}
+                    color="primary"
+                    fullWidth
+                  />
+                  <PropertyCard
+                    icon={<Eye className="w-4 h-4" />}
+                    label="Observaciones"
+                    value={mineral.observations ?? ""}
+                    color="muted"
+                    fullWidth
+                  />
                 </div>
               </div>
 
-              {/* Distinctive traits */}
+              {/* Paragénesis */}
               <div>
-                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4" />
-                  Rasgos Distintivos
-                </h3>
-                <div className="p-4 rounded-xl bg-primary/5 border border-primary/20">
-                  <p className="text-foreground leading-relaxed">{mineral.distinctiveTraits}</p>
-                </div>
-              </div>
-
-              {/* Paragenesis */}
-              <div>
-                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                  <Mountain className="w-4 h-4" />
-                  Paragénesis
-                </h3>
+                <SectionTitle icon={<Mountain className="w-4 h-4" />}>Paragénesis</SectionTitle>
                 <div className="p-4 rounded-xl bg-secondary/5 border border-secondary/20">
-                  <p className="text-foreground leading-relaxed">{mineral.paragenesis}</p>
+                  <p className="text-sm text-foreground leading-relaxed">
+                    {mineral.paragenesis?.trim() || "Sin dato registrado"}
+                  </p>
                 </div>
               </div>
             </div>

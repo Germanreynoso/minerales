@@ -72,7 +72,10 @@ export function Footer() {
           {/* Social links */}
           <div className="flex items-center gap-4">
             <motion.a
-              href="#"
+              href="https://github.com/Germanreynoso"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Perfil de GitHub de Germán Reynoso"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-primary/10 transition-colors"

@@ -30,13 +30,15 @@ ${mineralsData.minerals.map(m => `
   - Hábito/Forma: ${m.form}
   - Clivaje: ${m.cleavage}
   - Macla: ${m.twinning}
+  - Índices de refracción: ${m.refractiveIndex ?? "No registrado"}
   - Birrefringencia: ${m.birefringence}
   - Colores de interferencia: ${m.interferenceColors}
   - Carácter Óptico: ${m.opticalCharacter}
   - Extinción: ${m.extinction}
-  - Elongación: ${m.elongation}
+  - Orientación (elongación): ${m.elongation}
   - Alteración: ${m.alteration}
   - Rasgos Distintivos: ${m.distinctiveTraits}
+  - Observaciones: ${m.observations ?? "No registrado"}
   - Paragénesis: ${m.paragenesis}
   - Dureza: ${m.hardness}
   - Densidad: ${m.density}
