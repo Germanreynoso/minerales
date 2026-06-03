@@ -127,7 +127,7 @@ export function HeroSection({ onExplore, onChatOpen }: HeroSectionProps) {
               className="flex flex-wrap gap-8 pt-8 border-t border-border"
             >
               {[
-                { value: "10+", label: "Minerales" },
+                { value: "20", label: "Minerales" },
                 { value: "5", label: "Grupos" },
                 { value: "7", label: "Sistemas cristalinos" },
               ].map((stat, index) => (

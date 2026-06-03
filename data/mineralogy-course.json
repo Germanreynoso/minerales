@@ -1,0 +1,64 @@
+{
+  "source": "Cátedra de Mineralogía II — Fichas de minerales y propiedades ópticas",
+  "groups": [
+    { "name": "Filosilicatos", "siORatio": "2:5" },
+    { "name": "Nesosilicatos", "siORatio": "1:4" },
+    { "name": "Sorosilicatos", "siORatio": "2:7, 1:4" },
+    { "name": "Ortopiroxenos", "siORatio": "1:3" },
+    { "name": "Clinopiroxenos", "siORatio": "1:3" },
+    { "name": "Inosilicatos (Anfíboles)", "siORatio": "4:11" }
+  ],
+  "diagnosticTables": [
+    {
+      "title": "Diferenciación Opx vs Cpx por extinción",
+      "rows": [
+        { "mineral": "Ortopiroxenos", "property": "Extinción recta o paralela" },
+        { "mineral": "Clinopiroxenos", "property": "Extinción inclinada (>22°)" },
+        { "mineral": "Clinoenstatita", "property": "22°" },
+        { "mineral": "Jadeíta", "property": "34°" },
+        { "mineral": "Diópsido", "property": "38°" },
+        { "mineral": "Pigeonita", "property": "40°" },
+        { "mineral": "Augita", "property": "43°" },
+        { "mineral": "Hedenbergita", "property": "48°" },
+        { "mineral": "Egirina-Augita", "property": "80°" },
+        { "mineral": "Egirina", "property": "94° / 4°" }
+      ]
+    },
+    {
+      "title": "Clinopiroxenos vs clinoanfíboles (z ∧ c)",
+      "rows": [
+        { "mineral": "Clinopiroxenos", "property": "Ángulo de extinción > 22°" },
+        { "mineral": "Clinoanfíboles", "property": "Ángulo de extinción < 20°" }
+      ]
+    },
+    {
+      "title": "Clasificación Shelley — filosilicatos tipo E",
+      "content": "Moscovita, paragonita, lepidolita, flogopita, biotita, talco, pirofilita. Sericita = moscovita finamente granulada."
+    },
+    {
+      "title": "Serie del olivino (Fo–Fa)",
+      "rows": [
+        { "range": "Fo 100–90", "name": "Forsterita" },
+        { "range": "90–80", "name": "Crisolita" },
+        { "range": "80–70", "name": "Hialosiderita" },
+        { "range": "70–60", "name": "Hortonolita" },
+        { "range": "60–50", "name": "Ferrohortonolita" },
+        { "range": "50–0", "name": "Fayalita" }
+      ]
+    }
+  ],
+  "concepts": [
+    {
+      "title": "Polimorfos Al₂SiO₅",
+      "content": "Cianita (alta presión), sillimanita/fibrolita (alta temperatura), andalucita (baja P-T). Cianita → sillimanita con aumento del grado metamórfico."
+    },
+    {
+      "title": "Grupo del epidoto",
+      "content": "Pistacita/epidoto, zoicita y clinozoicita. Epidoto: birrefringencia mayor, extinción inclinada, manto de arlequín. Zoicita: CI gris, azul de Prusia anómalo, extinción paralela."
+    },
+    {
+      "title": "Halos pleocroicos",
+      "content": "Producidos por inclusiones de circón en biotita; circón tiene relieve extremo y alta birrefringencia."
+    }
+  ]
+}

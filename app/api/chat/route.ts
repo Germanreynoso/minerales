@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import mineralsData from "@/data/minerals.json"
+import { buildGeoBotKnowledgeBase } from "@/lib/mineralogy-knowledge"
 
 export async function POST(req: Request) {
   try {
@@ -15,46 +15,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "API key configuration error" }, { status: 500 })
     }
 
-    // Format the system prompt to supply context about the mineral catalog
-    const systemPrompt = `Eres GeoBot, un asistente experto y amigable en mineralogía, petrología y geología.
-Tu propósito es ayudar a los estudiantes y entusiastas a aprender sobre minerales, sus propiedades ópticas/cristalográficas, su identificación al microscopio y ambientes geológicos.
+    const knowledgeBase = buildGeoBotKnowledgeBase()
 
-Tienes acceso directo a nuestra base de datos de minerales para responder de forma precisa. Aquí están los minerales disponibles en nuestro catálogo:
-${mineralsData.minerals.map(m => `
-- **${m.name}** (Fórmula: ${m.formula})
-  - Grupo: ${m.group}
-  - Sistema Cristalino: ${m.crystallineSystem}
-  - Color: ${m.color}
-  - Pleocroísmo: ${m.pleochroism}
-  - Relieve: ${m.relief}
-  - Hábito/Forma: ${m.form}
-  - Clivaje: ${m.cleavage}
-  - Macla: ${m.twinning}
-  - Índices de refracción: ${m.refractiveIndex ?? "No registrado"}
-  - Birrefringencia: ${m.birefringence}
-  - Colores de interferencia: ${m.interferenceColors}
-  - Carácter Óptico: ${m.opticalCharacter}
-  - Extinción: ${m.extinction}
-  - Orientación (elongación): ${m.elongation}
-  - Alteración: ${m.alteration}
-  - Rasgos Distintivos: ${m.distinctiveTraits}
-  - Observaciones: ${m.observations ?? "No registrado"}
-  - Paragénesis: ${m.paragenesis}
-  - Dureza: ${m.hardness}
-  - Densidad: ${m.density}
-  - Ambiente Geológico: ${m.geologicalEnvironment}
-`).join("\n")}
+    const systemPrompt = `Eres GeoBot, asistente experto en mineralogía óptica (Cátedra de Mineralogía II).
+Tu propósito es ayudar a identificar minerales al microscopio y explicar propiedades ópticas, cristalográficas y paragénesis.
 
-Preguntas frecuentes (FAQ) de referencia:
-${mineralsData.faq.map(f => `Q: ${f.question}\nA: ${f.answer}`).join("\n\n")}
+${knowledgeBase}
 
 Instrucciones importantes:
-1. Responde SIEMPRE en español de manera clara, didáctica y profesional.
-2. Usa formato Markdown (negritas, listas, etc.) para que las respuestas sean fáciles de leer y visualmente atractivas.
-3. Si el usuario te pregunta sobre un mineral del catálogo, basa tu respuesta en las propiedades detalladas arriba.
-4. Si te preguntan sobre un mineral que NO está en el catálogo, puedes responder con tu conocimiento general de geología, pero aclara amablemente que ese mineral no se encuentra en el catálogo actual de la aplicación.
-5. Mantén tus respuestas concisas pero completas. Evita dar rodeos excesivos.
-`
+1. Responde SIEMPRE en español, claro y didáctico, como material de cátedra.
+2. Usa Markdown (negritas, listas) para respuestas legibles.
+3. Prioriza la base de conocimiento de la cátedra anterior; si un mineral no está en el catálogo, indícalo y responde con criterio del curso cuando aplique.
+4. Para diferenciar piroxenos usa extinción: Opx paralela, Cpx inclinada (>22°); Cpx vs anfíboles: Cpx >22°, anfíboles <20°.
+5. Respuestas concisas pero completas.`
 
     // Limit previous messages to keep history lightweight (e.g. last 10 messages)
     const recentMessages = messages.slice(-10)
@@ -77,7 +50,7 @@ Instrucciones importantes:
         model: "llama-3.3-70b-versatile",
         messages: formattedMessages,
         temperature: 0.7,
-        max_tokens: 1024
+        max_tokens: 1536
       })
     })
 
