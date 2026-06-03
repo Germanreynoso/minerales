@@ -139,13 +139,13 @@ export function HeroSection({ onExplore, onChatOpen }: HeroSectionProps) {
             </motion.div>
           </motion.div>
 
-          {/* Right content - Hero image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, x: 50 }}
-            animate={{ opacity: 1, scale: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="relative hidden lg:block"
-          >
+           {/* Right content - Hero image */}
+           <motion.div
+             initial={{ opacity: 0, scale: 0.9, x: 50 }}
+             animate={{ opacity: 1, scale: 1, x: 0 }}
+             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+             className="relative"
+           >
             <div className="relative aspect-square max-w-lg mx-auto">
               {/* Glow effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-3xl blur-3xl" />
