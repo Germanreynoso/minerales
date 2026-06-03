@@ -148,11 +148,11 @@ export function GlobalSearch({
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="w-full justify-between rounded-xl">
-                        <span className="truncate">
-                          {filters.groups.length > 0
-                            ? `${filters.groups.length} subcategorías minerales`
-                            : "Subcategorías minerales"}
-                        </span>
+                         <span className="truncate">
+                           {filters.groups.length > 0
+                             ? `${filters.groups.length} subclase`
+                             : "Subclase"}
+                         </span>
                       <ChevronDown className="w-4 h-4 ml-2 flex-shrink-0" />
                     </Button>
                   </DropdownMenuTrigger>
