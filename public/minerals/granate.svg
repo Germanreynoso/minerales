@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1f1014"/>
+      <stop offset="100%" stop-color="#10080a"/>
+    </linearGradient>
+    <linearGradient id="gar" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#c44a5a"/>
+      <stop offset="50%" stop-color="#9a2838"/>
+      <stop offset="100%" stop-color="#6a1828"/>
+    </linearGradient>
+    <radialGradient id="shine" cx="35%" cy="30%" r="50%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <ellipse cx="200" cy="330" rx="90" ry="25" fill="#000" opacity="0.4"/>
+  <polygon points="200,95 255,130 280,200 255,270 200,305 145,270 120,200 145,130" fill="url(#gar)"/>
+  <polygon points="200,95 255,130 280,200 255,270 200,305 145,270 120,200 145,130" fill="url(#shine)"/>
+  <polygon points="200,130 230,155 245,200 230,245 200,270 170,245 155,200 170,155" fill="#b83848" opacity="0.5"/>
+  <polygon points="165,200 200,175 235,200 200,225" fill="#d85a6a" opacity="0.3"/>
+</svg>

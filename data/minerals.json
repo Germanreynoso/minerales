@@ -24,7 +24,7 @@
       "hardness": "2-2.5",
       "density": "2.76-2.88 g/cm³",
       "geologicalEnvironment": "Rocas ígneas félsicas, metamórficas de grado medio a alto",
-      "image": "/minerals/muscovita.jpg"
+      "image": "/minerals/muscovita.svg"
     },
     {
       "id": "biotita",
@@ -50,7 +50,7 @@
       "hardness": "2.5-3",
       "density": "2.7-3.3 g/cm³",
       "geologicalEnvironment": "Rocas ígneas (granitos, dioritas), metamórficas de grado medio",
-      "image": "/minerals/biotita.jpg"
+      "image": "/minerals/biotita.svg"
     },
     {
       "id": "clorita",
@@ -76,7 +76,7 @@
       "hardness": "2-2.5",
       "density": "2.6-3.3 g/cm³",
       "geologicalEnvironment": "Metamorfismo de bajo grado, alteración hidrotermal, zonas de cizalla",
-      "image": "/minerals/clorita.jpg"
+      "image": "/minerals/clorita.svg"
     },
     {
       "id": "cuarzo",
@@ -102,7 +102,7 @@
       "hardness": "7",
       "density": "2.65 g/cm³",
       "geologicalEnvironment": "Universal, todos los ambientes geológicos",
-      "image": "/minerals/cuarzo.jpg"
+      "image": "/minerals/cuarzo.svg"
     },
     {
       "id": "plagioclasa",
@@ -128,7 +128,7 @@
       "hardness": "6-6.5",
       "density": "2.62-2.76 g/cm³",
       "geologicalEnvironment": "Rocas ígneas de todas las composiciones, metamórficas de grado medio-alto",
-      "image": "/minerals/plagioclasa.jpg"
+      "image": "/minerals/plagioclasa.svg"
     },
     {
       "id": "olivino",
@@ -154,7 +154,7 @@
       "hardness": "6.5-7",
       "density": "3.22-4.39 g/cm³",
       "geologicalEnvironment": "Rocas ígneas máficas y ultramáficas, meteoritos",
-      "image": "/minerals/olivino.jpg"
+      "image": "/minerals/olivino.svg"
     },
     {
       "id": "hornblenda",
@@ -180,7 +180,7 @@
       "hardness": "5-6",
       "density": "3.0-3.5 g/cm³",
       "geologicalEnvironment": "Rocas ígneas intermedias, metamórficas de grado medio",
-      "image": "/minerals/hornblenda.jpg"
+      "image": "/minerals/hornblenda.svg"
     },
     {
       "id": "augita",
@@ -206,7 +206,7 @@
       "hardness": "5-6",
       "density": "3.2-3.5 g/cm³",
       "geologicalEnvironment": "Rocas ígneas máficas, algunas metamórficas",
-      "image": "/minerals/augita.jpg"
+      "image": "/minerals/augita.svg"
     },
     {
       "id": "calcita",
@@ -232,7 +232,7 @@
       "hardness": "3",
       "density": "2.71 g/cm³",
       "geologicalEnvironment": "Sedimentario (calizas), metamórfico (mármoles), hidrotermal",
-      "image": "/minerals/calcita.jpg"
+      "image": "/minerals/calcita.svg"
     },
     {
       "id": "granate",
@@ -258,7 +258,7 @@
       "hardness": "6.5-7.5",
       "density": "3.5-4.3 g/cm³",
       "geologicalEnvironment": "Metamorfismo regional de grado medio-alto, metamorfismo de contacto",
-      "image": "/minerals/granate.jpg"
+      "image": "/minerals/granate.svg"
     }
   ],
   "groups": [

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#101a14"/>
+      <stop offset="100%" stop-color="#080c0a"/>
+    </linearGradient>
+    <linearGradient id="amph" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3d5c40"/>
+      <stop offset="50%" stop-color="#2a4030"/>
+      <stop offset="100%" stop-color="#1a2820"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <ellipse cx="200" cy="335" rx="50" ry="20" fill="#000" opacity="0.4"/>
+  <polygon points="200,90 235,120 235,290 200,320 165,290 165,120" fill="url(#amph)"/>
+  <polygon points="200,110 220,130 220,270 200,290 180,270 180,130" fill="#4a6a4e" opacity="0.6"/>
+  <line x1="200" y1="90" x2="200" y2="320" stroke="#5a7a5e" stroke-width="1" opacity="0.4"/>
+  <line x1="165" y1="180" x2="235" y2="180" stroke="#1a2820" stroke-width="0.8" opacity="0.5"/>
+  <line x1="168" y1="230" x2="232" y2="230" stroke="#1a2820" stroke-width="0.8" opacity="0.4"/>
+  <polygon points="120,200 145,185 145,215" fill="#2d4530" opacity="0.5"/>
+</svg>

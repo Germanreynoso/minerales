@@ -1,7 +1,8 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Gem, FlaskConical, Hexagon, Palette } from "lucide-react"
+import { FlaskConical, Hexagon, Palette } from "lucide-react"
+import { MineralImage } from "@/components/mineral-image"
 import type { Mineral } from "@/lib/types"
 
 interface MineralCardProps {
@@ -11,17 +12,6 @@ interface MineralCardProps {
 }
 
 export function MineralCard({ mineral, onClick, index }: MineralCardProps) {
-  // Generate a gradient based on mineral color description
-  const getGradient = (color: string) => {
-    const colorLower = color.toLowerCase()
-    if (colorLower.includes("verde")) return "from-emerald-900/50 to-teal-900/30"
-    if (colorLower.includes("pardo") || colorLower.includes("marrón")) return "from-amber-900/50 to-orange-900/30"
-    if (colorLower.includes("negro")) return "from-slate-800/50 to-zinc-900/30"
-    if (colorLower.includes("rosado") || colorLower.includes("rojo")) return "from-rose-900/50 to-pink-900/30"
-    if (colorLower.includes("azul")) return "from-blue-900/50 to-indigo-900/30"
-    return "from-gray-800/50 to-slate-900/30"
-  }
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -34,24 +24,9 @@ export function MineralCard({ mineral, onClick, index }: MineralCardProps) {
       className="group cursor-pointer"
     >
       <div className="relative rounded-2xl overflow-hidden bg-card border border-border shadow-lg hover:shadow-2xl hover:border-primary/30 transition-all duration-300">
-        {/* Image section */}
-        <div className={`relative h-48 bg-gradient-to-br ${getGradient(mineral.color)}`}>
-          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-30" />
-          
-          {/* Mineral icon/visual */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <motion.div
-              initial={{ scale: 0.8 }}
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="w-24 h-24 rounded-2xl bg-card/80 backdrop-blur-sm border border-border/50 flex items-center justify-center shadow-xl"
-            >
-              <Gem className="w-12 h-12 text-primary" />
-            </motion.div>
-          </div>
-
-          {/* Group badge */}
-          <div className="absolute top-4 left-4">
+        <div className="relative">
+          <MineralImage mineral={mineral} className="relative h-48" priority={index < 4} />
+          <div className="absolute top-4 left-4 z-10">
             <span className="px-3 py-1 rounded-full bg-card/90 backdrop-blur-sm text-xs font-medium text-foreground border border-border/50">
               {mineral.group}
             </span>

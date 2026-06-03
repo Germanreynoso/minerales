@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Gem, FlaskConical, Hexagon, Palette, Eye, Sparkles, Mountain, Layers, GitBranch } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { MineralImage } from "@/components/mineral-image"
 import type { Mineral } from "@/lib/types"
 
 interface MineralDetailProps {
@@ -77,28 +78,29 @@ export function MineralDetail({ mineral, isOpen, onClose }: MineralDetailProps) 
             className="fixed inset-0 sm:inset-y-0 sm:left-auto sm:right-0 w-full sm:max-w-2xl bg-card sm:border-l border-border shadow-2xl z-50 overflow-y-auto overscroll-contain"
           >
             {/* Header */}
-            <div className={`sticky top-0 z-10 bg-gradient-to-br ${getGradient(mineral.color)} border-b border-border pt-[env(safe-area-inset-top)]`}>
-              <div className="p-4 sm:p-6">
-                <div className="flex items-start justify-between gap-3 mb-4 sm:mb-6">
-                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-card/80 backdrop-blur-sm border border-border flex items-center justify-center flex-shrink-0">
-                      <Gem className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
-                    </div>
-                    <div className="min-w-0">
-                      <span className="text-xs text-muted-foreground uppercase tracking-wider">
-                        {mineral.group}
-                      </span>
-                      <h2 className="text-xl sm:text-2xl font-bold text-foreground truncate">{mineral.name}</h2>
-                    </div>
+            <div className={`sticky top-0 z-10 border-b border-border pt-[env(safe-area-inset-top)]`}>
+              <div className="relative">
+                <MineralImage mineral={mineral} className="relative h-40 sm:h-48" priority />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={onClose}
+                  className="absolute top-3 right-3 sm:top-4 sm:right-4 rounded-full bg-card/80 backdrop-blur-sm hover:bg-card"
+                >
+                  <X className="w-5 h-5" />
+                </Button>
+              </div>
+              <div className={`p-4 sm:p-6 bg-gradient-to-br ${getGradient(mineral.color)}`}>
+                <div className="flex items-center gap-3 sm:gap-4 min-w-0 mb-4 sm:mb-6">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-card/80 backdrop-blur-sm border border-border flex items-center justify-center flex-shrink-0">
+                    <Gem className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={onClose}
-                    className="rounded-full hover:bg-background/50"
-                  >
-                    <X className="w-5 h-5" />
-                  </Button>
+                  <div className="min-w-0">
+                    <span className="text-xs text-muted-foreground uppercase tracking-wider">
+                      {mineral.group}
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-bold text-foreground">{mineral.name}</h2>
+                  </div>
                 </div>
 
                 {/* Formula highlight */}

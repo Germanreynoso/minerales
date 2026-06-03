@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1f1810"/>
+      <stop offset="100%" stop-color="#0f0d0a"/>
+    </linearGradient>
+    <linearGradient id="mica" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5c4030"/>
+      <stop offset="50%" stop-color="#3d2818"/>
+      <stop offset="100%" stop-color="#1a1008"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <ellipse cx="200" cy="320" rx="140" ry="30" fill="#000" opacity="0.4"/>
+  <path d="M70 190 L200 125 L330 190 L290 275 L110 275 Z" fill="url(#mica)"/>
+  <path d="M95 210 L200 155 L305 210 L270 290 L130 290 Z" fill="#4a3525" opacity="0.9"/>
+  <path d="M115 230 L200 180 L285 230 L255 305 L145 305 Z" fill="#6b4a32"/>
+  <path d="M135 250 L200 205 L265 250 L240 318 L160 318 Z" fill="#2d1f14"/>
+  <path d="M155 265 L200 225 L245 265 L225 328 L175 328 Z" fill="#8b6344" opacity="0.6"/>
+</svg>
