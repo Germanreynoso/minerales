@@ -83,7 +83,7 @@ export function MineralComparator({ minerals }: MineralComparatorProps) {
           transition={{ delay: 0.1 }}
           className="max-w-4xl mx-auto mb-8"
         >
-          <div className="flex flex-col md:flex-row items-center gap-4 p-6 rounded-2xl bg-card border border-border">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 p-4 sm:p-6 rounded-2xl bg-card border border-border">
             {/* Mineral 1 selector */}
             <div className="flex-1 w-full">
               <label className="text-sm text-muted-foreground mb-2 block">
@@ -160,29 +160,10 @@ export function MineralComparator({ minerals }: MineralComparatorProps) {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-5xl mx-auto overflow-hidden rounded-2xl border border-border bg-card"
+            className="max-w-5xl mx-auto"
           >
-            {/* Table header */}
-            <div className="grid grid-cols-3 bg-muted">
-              <div className="p-4 font-semibold text-foreground border-r border-border">
-                Propiedad
-              </div>
-              <div className="p-4 font-semibold text-primary text-center border-r border-border">
-                <div className="flex items-center justify-center gap-2">
-                  <Gem className="w-4 h-4" />
-                  {mineral1.name}
-                </div>
-              </div>
-              <div className="p-4 font-semibold text-secondary text-center">
-                <div className="flex items-center justify-center gap-2">
-                  <Gem className="w-4 h-4" />
-                  {mineral2.name}
-                </div>
-              </div>
-            </div>
-
-            {/* Table body */}
-            <div className="divide-y divide-border">
+            {/* Mobile: card layout */}
+            <div className="md:hidden space-y-3">
               {COMPARISON_FIELDS.map((field, index) => {
                 const value1 = mineral1[field.key]
                 const value2 = mineral2[field.key]
@@ -191,26 +172,80 @@ export function MineralComparator({ minerals }: MineralComparatorProps) {
                 return (
                   <motion.div
                     key={field.key}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.03 }}
-                    className="grid grid-cols-3 hover:bg-muted/50 transition-colors"
+                    className="p-4 rounded-2xl bg-card border border-border"
                   >
-                    <div className="p-4 text-sm text-muted-foreground border-r border-border flex items-center gap-2">
-                      {isSame && (
-                        <Check className="w-4 h-4 text-primary flex-shrink-0" />
-                      )}
+                    <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground mb-3">
+                      {isSame && <Check className="w-4 h-4 text-primary flex-shrink-0" />}
                       {field.label}
                     </div>
-                    <div className="p-4 text-sm text-foreground border-r border-border">
-                      {value1}
-                    </div>
-                    <div className="p-4 text-sm text-foreground">
-                      {value2}
+                    <div className="space-y-2">
+                      <div className="p-3 rounded-xl bg-primary/5 border border-primary/20">
+                        <p className="text-xs text-primary font-medium mb-1">{mineral1.name}</p>
+                        <p className="text-sm text-foreground">{value1}</p>
+                      </div>
+                      <div className="p-3 rounded-xl bg-secondary/5 border border-secondary/20">
+                        <p className="text-xs text-secondary font-medium mb-1">{mineral2.name}</p>
+                        <p className="text-sm text-foreground">{value2}</p>
+                      </div>
                     </div>
                   </motion.div>
                 )
               })}
+            </div>
+
+            {/* Desktop: table layout */}
+            <div className="hidden md:block overflow-hidden rounded-2xl border border-border bg-card">
+              <div className="grid grid-cols-3 bg-muted">
+                <div className="p-4 font-semibold text-foreground border-r border-border">
+                  Propiedad
+                </div>
+                <div className="p-4 font-semibold text-primary text-center border-r border-border">
+                  <div className="flex items-center justify-center gap-2">
+                    <Gem className="w-4 h-4" />
+                    {mineral1.name}
+                  </div>
+                </div>
+                <div className="p-4 font-semibold text-secondary text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <Gem className="w-4 h-4" />
+                    {mineral2.name}
+                  </div>
+                </div>
+              </div>
+
+              <div className="divide-y divide-border">
+                {COMPARISON_FIELDS.map((field, index) => {
+                  const value1 = mineral1[field.key]
+                  const value2 = mineral2[field.key]
+                  const isSame = value1 === value2
+
+                  return (
+                    <motion.div
+                      key={field.key}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.03 }}
+                      className="grid grid-cols-3 hover:bg-muted/50 transition-colors"
+                    >
+                      <div className="p-4 text-sm text-muted-foreground border-r border-border flex items-center gap-2">
+                        {isSame && (
+                          <Check className="w-4 h-4 text-primary flex-shrink-0" />
+                        )}
+                        {field.label}
+                      </div>
+                      <div className="p-4 text-sm text-foreground border-r border-border">
+                        {value1}
+                      </div>
+                      <div className="p-4 text-sm text-foreground">
+                        {value2}
+                      </div>
+                    </motion.div>
+                  )
+                })}
+              </div>
             </div>
           </motion.div>
         ) : (

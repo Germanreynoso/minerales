@@ -14,6 +14,12 @@ export const metadata: Metadata = {
   keywords: ['mineralogía', 'geología', 'minerales', 'óptica mineral', 'petrografía', 'cristalografía'],
 }
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{

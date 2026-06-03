@@ -26,79 +26,7 @@ const SUGGESTED_QUESTIONS = [
   "¿Cómo identificar filosilicatos?",
 ]
 
-const BOT_RESPONSES: Record<string, string> = {
-  "muscovita": `La **muscovita** y la **biotita** son ambas micas del grupo de los filosilicatos, pero tienen diferencias clave:
-
-**Color:**
-- Muscovita: Incolora a gris claro (sin pleocroísmo)
-- Biotita: Pardo oscuro con fuerte pleocroísmo (α = amarillo pálido, γ = pardo oscuro)
-
-**Identificación al microscopio:**
-- La muscovita aparece transparente/incolora en luz polarizada plana
-- La biotita muestra colores pardos intensos y pleocroísmo muy evidente
-
-**Halos pleocroicos:**
-- La biotita frecuentemente presenta halos pleocroicos oscuros alrededor de inclusiones de circón, que no se ven en muscovita
-
-Ambas tienen clivaje perfecto basal, extinción paralela y colores de interferencia de segundo a tercer orden.`,
-
-  "clorita": `La **clorita** es un filosilicato muy importante en geología, especialmente como indicador de metamorfismo de bajo grado.
-
-**Características principales:**
-- **Fórmula:** (Mg,Fe,Al)₆[(Si,Al)₄O₁₀](OH)₈
-- **Color:** Verde pálido a verde oscuro
-- **Sistema:** Monoclínico y Triclínico
-
-**Identificación óptica:**
-- Color verde característico
-- Birrefringencia MUY baja (0.000-0.015)
-- **Birrefringencia anómala:** Frecuentemente muestra colores azul berlín en lugar de grises de primer orden
-- Pleocroísmo débil (verde claro a verde oscuro)
-
-**Origen:**
-Es comúnmente un producto de alteración de biotita, hornblenda y otros minerales ferromagnesianos en condiciones de metamorfismo retrógrado o alteración hidrotermal.`,
-
-  "biáxico": `El **carácter óptico biáxico** se refiere a minerales con dos ejes ópticos.
-
-**Conceptos clave:**
-- Los minerales biáxicos pertenecen a los sistemas ortorrómbico, monoclínico y triclínico
-- Tienen **tres índices de refracción principales**: nα < nβ < nγ
-- Poseen **dos direcciones** donde la luz viaja sin dividirse (ejes ópticos)
-
-**Biáxico (+) vs Biáxico (-):**
-- **Biáxico (+):** nβ está más cerca de nα. La bisectriz aguda (Bxa) coincide con Z (nγ)
-- **Biáxico (-):** nβ está más cerca de nγ. La bisectriz aguda (Bxa) coincide con X (nα)
-
-**Ángulo 2V:**
-Es el ángulo entre los dos ejes ópticos. Varía de 0° a 90°:
-- 2V pequeño: Las isogyras están juntas
-- 2V grande: Las isogyras están muy separadas`,
-
-  "filosilicatos": `Los **filosilicatos** (del griego "phyllon" = hoja) son silicatos con estructura laminar.
-
-**Estructura:**
-- Tetraedros SiO₄ comparten 3 de sus 4 oxígenos
-- Forman hojas infinitas con relación Si:O de 2:5
-- Las hojas se unen por cationes entre ellas
-
-**Propiedades características:**
-1. **Clivaje perfecto basal** {001} - se separan fácilmente en láminas
-2. **Hábito tabular/laminar**
-3. **Dureza baja** (2-3 en la escala de Mohs)
-4. **Birrefringencia alta** en general
-
-**Identificación al microscopio:**
-- Buscar extinción paralela al clivaje
-- Observar forma alargada/tabular
-- Colores de interferencia vivos (micas)
-- Aspecto "escamoso" característico
-
-**Ejemplos principales:**
-- Micas: muscovita, biotita, flogopita
-- Arcillas: caolinita, illita, montmorillonita
-- Clorita, serpentina, talco`,
-
-  "default": `¡Hola! Soy **GeoBot**, tu asistente especializado en mineralogía, petrología y geología.
+const WELCOME_MESSAGE = `¡Hola! Soy **GeoBot**, tu asistente especializado en mineralogía, petrología y geología.
 
 Puedo ayudarte con:
 - Identificación de minerales al microscopio
@@ -108,25 +36,49 @@ Puedo ayudarte con:
 - Ambientes geológicos y paragénesis
 
 ¿Qué te gustaría saber? Puedes preguntarme sobre cualquier mineral de la base de datos o conceptos de mineralogía.`
-}
 
-function getBotResponse(question: string): string {
-  const q = question.toLowerCase()
-  
-  if (q.includes("muscovita") || q.includes("biotita") || q.includes("diferencio")) {
-    return BOT_RESPONSES["muscovita"]
-  }
-  if (q.includes("clorita")) {
-    return BOT_RESPONSES["clorita"]
-  }
-  if (q.includes("biáxico") || q.includes("biaxic") || q.includes("carácter óptico")) {
-    return BOT_RESPONSES["biáxico"]
-  }
-  if (q.includes("filosilicato") || q.includes("filosilicatos")) {
-    return BOT_RESPONSES["filosilicatos"]
-  }
-  
-  return BOT_RESPONSES["default"]
+function formatMessageContent(content: string) {
+  const lines = content.split("\n")
+  return (
+    <div className="space-y-1.5">
+      {lines.map((line, index) => {
+        const trimmed = line.trim()
+        const isBullet = trimmed.startsWith("- ") || trimmed.startsWith("* ")
+        let cleanLine = line
+        if (isBullet) {
+          cleanLine = trimmed.substring(2)
+        }
+
+        // Process bold text
+        const parts = cleanLine.split("**")
+        const formattedText = parts.map((part, i) => {
+          if (i % 2 === 1) {
+            return (
+              <strong key={i} className="font-semibold text-foreground">
+                {part}
+              </strong>
+            )
+          }
+          return part
+        })
+
+        if (isBullet) {
+          return (
+            <div key={index} className="flex items-start gap-1.5 pl-2 text-sm leading-relaxed">
+              <span className="text-primary mt-1.5 select-none">•</span>
+              <span>{formattedText}</span>
+            </div>
+          )
+        }
+
+        return (
+          <p key={index} className="text-sm leading-relaxed min-h-[1rem]">
+            {formattedText}
+          </p>
+        )
+      })}
+    </div>
+  )
 }
 
 export function GeoBot({ isOpen, onClose, onOpen }: GeoBotProps) {
@@ -134,7 +86,7 @@ export function GeoBot({ isOpen, onClose, onOpen }: GeoBotProps) {
     {
       id: "welcome",
       role: "assistant",
-      content: BOT_RESPONSES["default"],
+      content: WELCOME_MESSAGE,
       timestamp: new Date(),
     },
   ])
@@ -150,6 +102,15 @@ export function GeoBot({ isOpen, onClose, onOpen }: GeoBotProps) {
     scrollToBottom()
   }, [messages])
 
+  useEffect(() => {
+    if (!isOpen) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [isOpen])
+
   const handleSend = async (message: string) => {
     if (!message.trim()) return
 
@@ -164,18 +125,46 @@ export function GeoBot({ isOpen, onClose, onOpen }: GeoBotProps) {
     setInput("")
     setIsTyping(true)
 
-    // Simulate typing delay
-    await new Promise((resolve) => setTimeout(resolve, 1000 + Math.random() * 1000))
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          messages: [...messages, userMessage].map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        }),
+      })
 
-    const botResponse: Message = {
-      id: (Date.now() + 1).toString(),
-      role: "assistant",
-      content: getBotResponse(message),
-      timestamp: new Date(),
+      if (!response.ok) {
+        throw new Error("API call failed")
+      }
+
+      const data = await response.json()
+
+      const botResponse: Message = {
+        id: Date.now().toString(),
+        role: "assistant",
+        content: data.content || "Lo siento, no pude obtener respuesta en este momento.",
+        timestamp: new Date(),
+      }
+
+      setMessages((prev) => [...prev, botResponse])
+    } catch (error) {
+      console.error("Error calling GeoBot API:", error)
+      const errorMessage: Message = {
+        id: Date.now().toString(),
+        role: "assistant",
+        content: "⚠️ Lo siento, ocurrió un error al comunicarme con el servidor. Por favor, intenta de nuevo.",
+        timestamp: new Date(),
+      }
+      setMessages((prev) => [...prev, errorMessage])
+    } finally {
+      setIsTyping(false)
     }
-
-    setIsTyping(false)
-    setMessages((prev) => [...prev, botResponse])
   }
 
   const handleSuggestedQuestion = (question: string) => {
@@ -191,12 +180,12 @@ export function GeoBot({ isOpen, onClose, onOpen }: GeoBotProps) {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            className="fixed bottom-6 right-6 z-40"
+            className="fixed z-40 bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] sm:bottom-6 sm:right-6"
           >
             <Button
               onClick={onOpen}
               size="lg"
-              className="rounded-full w-14 h-14 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30"
+              className="rounded-full w-12 h-12 sm:w-14 sm:h-14 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30"
             >
               <MessageCircle className="w-6 h-6" />
             </Button>
@@ -212,10 +201,10 @@ export function GeoBot({ isOpen, onClose, onOpen }: GeoBotProps) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed bottom-6 right-6 w-[400px] max-w-[calc(100vw-3rem)] h-[600px] max-h-[calc(100vh-6rem)] bg-card border border-border rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden"
+            className="fixed z-50 flex flex-col overflow-hidden bg-card border border-border shadow-2xl inset-0 rounded-none sm:inset-auto sm:bottom-6 sm:right-6 sm:w-[400px] sm:max-w-[calc(100vw-3rem)] sm:h-[600px] sm:max-h-[calc(100vh-6rem)] sm:rounded-2xl"
           >
             {/* Header */}
-            <div className="p-4 border-b border-border bg-gradient-to-r from-primary/10 to-secondary/10">
+            <div className="p-3 sm:p-4 border-b border-border bg-gradient-to-r from-primary/10 to-secondary/10 pt-[max(0.75rem,env(safe-area-inset-top))] sm:pt-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
@@ -240,7 +229,7 @@ export function GeoBot({ isOpen, onClose, onOpen }: GeoBotProps) {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <div className="flex-1 overflow-y-auto overscroll-contain p-3 sm:p-4 space-y-4">
               {messages.map((message) => (
                 <motion.div
                   key={message.id}
@@ -264,23 +253,13 @@ export function GeoBot({ isOpen, onClose, onOpen }: GeoBotProps) {
                     )}
                   </div>
                   <div
-                    className={`max-w-[80%] p-3 rounded-2xl ${
+                    className={`max-w-[85%] sm:max-w-[80%] p-2.5 sm:p-3 rounded-2xl ${
                       message.role === "user"
                         ? "bg-secondary text-secondary-foreground rounded-tr-sm"
                         : "bg-muted text-foreground rounded-tl-sm"
                     }`}
                   >
-                    <p className="text-sm whitespace-pre-wrap leading-relaxed">
-                      {message.content.split("**").map((part, i) =>
-                        i % 2 === 1 ? (
-                          <strong key={i} className="font-semibold">
-                            {part}
-                          </strong>
-                        ) : (
-                          part
-                        )
-                      )}
-                    </p>
+                    {formatMessageContent(message.content)}
                   </div>
                 </motion.div>
               ))}
@@ -319,7 +298,7 @@ export function GeoBot({ isOpen, onClose, onOpen }: GeoBotProps) {
 
             {/* Suggested questions */}
             {messages.length <= 1 && (
-              <div className="px-4 pb-2">
+              <div className="px-3 sm:px-4 pb-2">
                 <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
                   <Sparkles className="w-3 h-3" />
                   Preguntas sugeridas
@@ -329,7 +308,7 @@ export function GeoBot({ isOpen, onClose, onOpen }: GeoBotProps) {
                     <button
                       key={index}
                       onClick={() => handleSuggestedQuestion(question)}
-                      className="text-xs px-3 py-1.5 rounded-full bg-muted hover:bg-primary/10 hover:text-primary text-muted-foreground transition-colors"
+                      className="text-xs px-3 py-2 rounded-full bg-muted hover:bg-primary/10 hover:text-primary text-muted-foreground transition-colors text-left max-w-full"
                     >
                       {question}
                     </button>
@@ -339,7 +318,7 @@ export function GeoBot({ isOpen, onClose, onOpen }: GeoBotProps) {
             )}
 
             {/* Input */}
-            <div className="p-4 border-t border-border">
+            <div className="p-3 sm:p-4 border-t border-border pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pb-4">
               <form
                 onSubmit={(e) => {
                   e.preventDefault()

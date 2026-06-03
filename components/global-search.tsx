@@ -83,15 +83,15 @@ export function GlobalSearch({
           {/* Main search bar */}
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-2xl blur-xl opacity-50" />
-            <div className="relative flex items-center gap-3 p-2 rounded-2xl bg-card border border-border shadow-lg">
-              <div className="flex-1 flex items-center gap-3 px-4">
-                <Search className="w-5 h-5 text-muted-foreground" />
+            <div className="relative flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 p-2 rounded-2xl bg-card border border-border shadow-lg">
+              <div className="flex-1 flex items-center gap-2 sm:gap-3 px-2 sm:px-4 min-w-0">
+                <Search className="w-5 h-5 text-muted-foreground flex-shrink-0" />
                 <Input
                   type="text"
-                  placeholder="Buscar por nombre, fórmula química, grupo, sistema cristalino, color..."
+                  placeholder="Buscar minerales..."
                   value={searchQuery}
                   onChange={(e) => onSearchChange(e.target.value)}
-                  className="border-0 bg-transparent text-foreground placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 text-base"
+                  className="border-0 bg-transparent text-foreground placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 text-base min-w-0"
                 />
                 {searchQuery && (
                   <Button
@@ -107,7 +107,7 @@ export function GlobalSearch({
               <Button
                 onClick={() => setShowFilters(!showFilters)}
                 variant={showFilters ? "default" : "outline"}
-                className={`rounded-xl px-4 gap-2 ${showFilters ? "bg-primary text-primary-foreground" : ""}`}
+                className={`rounded-xl px-4 gap-2 w-full sm:w-auto shrink-0 ${showFilters ? "bg-primary text-primary-foreground" : ""}`}
               >
                 <Filter className="w-4 h-4" />
                 Filtros
@@ -126,9 +126,9 @@ export function GlobalSearch({
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="p-6 rounded-2xl bg-card border border-border shadow-lg"
+              className="p-4 sm:p-6 rounded-2xl bg-card border border-border shadow-lg"
             >
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
                 <h3 className="text-lg font-semibold text-foreground">Filtros avanzados</h3>
                 {activeFilterCount > 0 && (
                   <Button
@@ -143,7 +143,7 @@ export function GlobalSearch({
                 )}
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                 {/* Group filter */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>

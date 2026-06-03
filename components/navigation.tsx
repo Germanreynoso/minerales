@@ -56,7 +56,7 @@ export function Navigation({ onChatOpen }: NavigationProps) {
               <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                 <Gem className="w-5 h-5 text-primary" />
               </div>
-              <span className="text-xl font-bold text-foreground">
+              <span className="text-lg sm:text-xl font-bold text-foreground">
                 Geo<span className="text-primary">Mineral</span>
               </span>
             </a>

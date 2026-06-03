@@ -74,21 +74,21 @@ export function MineralDetail({ mineral, isOpen, onClose }: MineralDetailProps) 
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 bottom-0 w-full max-w-2xl bg-card border-l border-border shadow-2xl z-50 overflow-y-auto"
+            className="fixed inset-0 sm:inset-y-0 sm:left-auto sm:right-0 w-full sm:max-w-2xl bg-card sm:border-l border-border shadow-2xl z-50 overflow-y-auto overscroll-contain"
           >
             {/* Header */}
-            <div className={`sticky top-0 z-10 bg-gradient-to-br ${getGradient(mineral.color)} border-b border-border`}>
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-2xl bg-card/80 backdrop-blur-sm border border-border flex items-center justify-center">
-                      <Gem className="w-8 h-8 text-primary" />
+            <div className={`sticky top-0 z-10 bg-gradient-to-br ${getGradient(mineral.color)} border-b border-border pt-[env(safe-area-inset-top)]`}>
+              <div className="p-4 sm:p-6">
+                <div className="flex items-start justify-between gap-3 mb-4 sm:mb-6">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-card/80 backdrop-blur-sm border border-border flex items-center justify-center flex-shrink-0">
+                      <Gem className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <span className="text-xs text-muted-foreground uppercase tracking-wider">
                         {mineral.group}
                       </span>
-                      <h2 className="text-2xl font-bold text-foreground">{mineral.name}</h2>
+                      <h2 className="text-xl sm:text-2xl font-bold text-foreground truncate">{mineral.name}</h2>
                     </div>
                   </div>
                   <Button
@@ -110,7 +110,7 @@ export function MineralDetail({ mineral, isOpen, onClose }: MineralDetailProps) 
             </div>
 
             {/* Content */}
-            <div className="p-6 space-y-6">
+            <div className="p-4 sm:p-6 space-y-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
               {/* Crystallographic properties */}
               <div>
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">

@@ -149,9 +149,9 @@ export function StatisticsSection({ minerals }: StatisticsSectionProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="p-6 rounded-2xl bg-card border border-border hover:border-primary/30 transition-colors"
+              className="p-4 sm:p-6 rounded-2xl bg-card border border-border hover:border-primary/30 transition-colors"
             >
-              <div className={`w-10 h-10 rounded-xl mb-4 flex items-center justify-center ${
+              <div className={`w-10 h-10 rounded-xl mb-3 sm:mb-4 flex items-center justify-center ${
                 stat.color === "primary" ? "bg-primary/10 text-primary" :
                 stat.color === "secondary" ? "bg-secondary/10 text-secondary" :
                 stat.color === "accent" ? "bg-accent/20 text-accent-foreground" :
@@ -159,8 +159,8 @@ export function StatisticsSection({ minerals }: StatisticsSectionProps) {
               }`}>
                 {stat.icon}
               </div>
-              <p className="text-3xl font-bold text-foreground mb-1">{stat.value}</p>
-              <p className="text-sm text-muted-foreground">{stat.label}</p>
+              <p className="text-2xl sm:text-3xl font-bold text-foreground mb-1">{stat.value}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">{stat.label}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -172,12 +172,12 @@ export function StatisticsSection({ minerals }: StatisticsSectionProps) {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="p-6 rounded-2xl bg-card border border-border"
+            className="p-4 sm:p-6 rounded-2xl bg-card border border-border"
           >
-            <h3 className="text-lg font-semibold text-foreground mb-6">
+            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4 sm:mb-6">
               Distribución por Grupos
             </h3>
-            <div className="h-64">
+            <div className="h-56 sm:h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -225,19 +225,19 @@ export function StatisticsSection({ minerals }: StatisticsSectionProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="p-6 rounded-2xl bg-card border border-border"
+            className="p-4 sm:p-6 rounded-2xl bg-card border border-border"
           >
-            <h3 className="text-lg font-semibold text-foreground mb-6">
+            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4 sm:mb-6">
               Sistemas Cristalinos
             </h3>
-            <div className="h-64">
+            <div className="h-56 sm:h-64">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={systemData} layout="vertical">
+                <BarChart data={systemData} layout="vertical" margin={{ left: 0, right: 8 }}>
                   <XAxis type="number" hide />
                   <YAxis
                     type="category"
                     dataKey="name"
-                    width={100}
+                    width={72}
                     tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
                     axisLine={false}
                     tickLine={false}
@@ -260,19 +260,23 @@ export function StatisticsSection({ minerals }: StatisticsSectionProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="p-6 rounded-2xl bg-card border border-border md:col-span-2"
+            className="p-4 sm:p-6 rounded-2xl bg-card border border-border md:col-span-2"
           >
-            <h3 className="text-lg font-semibold text-foreground mb-6">
+            <h3 className="text-base sm:text-lg font-semibold text-foreground mb-4 sm:mb-6">
               Ambientes Geológicos
             </h3>
-            <div className="h-48">
+            <div className="h-52 sm:h-48">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={environmentData}>
+                <BarChart data={environmentData} margin={{ bottom: 40, left: 4, right: 4 }}>
                   <XAxis
                     dataKey="name"
-                    tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
+                    tick={{ fill: "var(--muted-foreground)", fontSize: 10 }}
                     axisLine={false}
                     tickLine={false}
+                    angle={-35}
+                    textAnchor="end"
+                    height={60}
+                    interval={0}
                   />
                   <YAxis hide />
                   <Tooltip content={<CustomTooltip />} />

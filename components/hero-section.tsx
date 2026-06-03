@@ -31,7 +31,7 @@ export function HeroSection({ onExplore, onChatOpen }: HeroSectionProps) {
   }, [])
 
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+    <section className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center overflow-hidden pt-20 md:pt-24">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-secondary/10" />
       
@@ -80,7 +80,7 @@ export function HeroSection({ onExplore, onChatOpen }: HeroSectionProps) {
             </motion.div>
 
             {/* Title */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight text-balance">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight text-balance">
               Explora el mundo de los{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
                 minerales
@@ -98,12 +98,12 @@ export function HeroSection({ onExplore, onChatOpen }: HeroSectionProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              className="flex flex-wrap gap-4"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4"
             >
               <Button
                 size="lg"
                 onClick={onExplore}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl px-8 py-6 text-base font-medium shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 hover:scale-105"
+                className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl px-6 sm:px-8 py-5 sm:py-6 text-base font-medium shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30 sm:hover:scale-105"
               >
                 Explorar minerales
                 <ArrowRight className="w-5 h-5 ml-2" />
@@ -112,7 +112,7 @@ export function HeroSection({ onExplore, onChatOpen }: HeroSectionProps) {
                 size="lg"
                 variant="outline"
                 onClick={onChatOpen}
-                className="rounded-xl px-8 py-6 text-base font-medium border-border hover:bg-card hover:border-primary/50 transition-all hover:scale-105"
+                className="w-full sm:w-auto rounded-xl px-6 sm:px-8 py-5 sm:py-6 text-base font-medium border-border hover:bg-card hover:border-primary/50 transition-all sm:hover:scale-105"
               >
                 <Bot className="w-5 h-5 mr-2" />
                 Consultar asistente
