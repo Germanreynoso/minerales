@@ -34,11 +34,6 @@ function formatMineral(m: Mineral): string {
 - **Paragénesis:** ${m.paragenesis}`
 }
 
-/** Línea compacta para el índice del catálogo (se envía SIEMPRE, todos los minerales). */
-function formatMineralIndex(m: Mineral): string {
-  return `- **${m.name}** (${m.group}, ${m.crystallineSystem})`
-}
-
 /** Tokens de nombre/id (≥4 letras) usados para detectar menciones de un mineral en el texto. */
 function aliasTokens(m: Mineral): string[] {
   return normalize(`${m.name} ${m.id}`)
@@ -47,7 +42,7 @@ function aliasTokens(m: Mineral): string[] {
 }
 
 /** Selecciona hasta `max` minerales mencionados explícitamente en el texto del usuario. */
-function selectMinerals(userText: string, max = 3): Mineral[] {
+function selectMinerals(userText: string, max = 2): Mineral[] {
   const q = normalize(userText)
   if (!q) return []
   const matched: Mineral[] = []
@@ -100,7 +95,9 @@ export function buildGeoBotKnowledgeBase(userText = ""): string {
     .map((c) => `**${c.title}:** ${c.content}`)
     .join("\n\n")
 
-  const index = data.minerals.map(formatMineralIndex).join("\n")
+  // Índice compacto: solo nombres (se envía SIEMPRE). Las fichas completas se
+  // recuperan por retrieval solo para los minerales mencionados en la consulta.
+  const index = data.minerals.map((m) => m.name).join(", ")
 
   const matched = selectMinerals(userText)
   const fichas = matched.length

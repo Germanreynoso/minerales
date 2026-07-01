@@ -142,7 +142,7 @@ export function GeoBot({ isOpen, onClose, onOpen }: GeoBotProps) {
       if (!response.ok) {
         const errBody = await response.json().catch(() => ({}))
         console.error("GeoBot API error:", response.status, errBody)
-        throw new Error(errBody.error || `HTTP ${response.status}`)
+        throw new Error(response.status === 429 ? "RATE_LIMIT" : "API call failed")
       }
 
       const data = await response.json()
@@ -157,10 +157,14 @@ export function GeoBot({ isOpen, onClose, onOpen }: GeoBotProps) {
       setMessages((prev) => [...prev, botResponse])
     } catch (error) {
       console.error("Error calling GeoBot API:", error)
+      const content =
+        error instanceof Error && error.message === "RATE_LIMIT"
+          ? "⏳ Estás yendo muy rápido para el límite gratuito de Groq (8k tokens/min). Esperá ~30 segundos y volvé a intentar."
+          : "⚠️ Lo siento, ocurrió un error al comunicarme con el servidor. Por favor, intenta de nuevo."
       const errorMessage: Message = {
         id: Date.now().toString(),
         role: "assistant",
-        content: "⚠️ Lo siento, ocurrió un error al comunicarme con el servidor. Por favor, intenta de nuevo.",
+        content,
         timestamp: new Date(),
       }
       setMessages((prev) => [...prev, errorMessage])
