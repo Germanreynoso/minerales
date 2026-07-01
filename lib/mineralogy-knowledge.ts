@@ -4,6 +4,12 @@ import type { Mineral, MineralsData } from "@/lib/types"
 
 const data = mineralsData as MineralsData
 
+/** Minúsculas + sin acentos, para matchear nombres de minerales de forma robusta. */
+function normalize(s: string): string {
+  return (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
+}
+
+/** Ficha completa (se envía SOLO para los minerales relevantes a la consulta). */
 function formatMineral(m: Mineral): string {
   return `
 ### ${m.name}
@@ -28,7 +34,56 @@ function formatMineral(m: Mineral): string {
 - **Paragénesis:** ${m.paragenesis}`
 }
 
-export function buildGeoBotKnowledgeBase(): string {
+/** Línea compacta para el índice del catálogo (se envía SIEMPRE, todos los minerales). */
+function formatMineralIndex(m: Mineral): string {
+  return `- **${m.name}** (${m.group}, ${m.crystallineSystem})`
+}
+
+/** Tokens de nombre/id (≥4 letras) usados para detectar menciones de un mineral en el texto. */
+function aliasTokens(m: Mineral): string[] {
+  return normalize(`${m.name} ${m.id}`)
+    .split(/[^a-z0-9]+/)
+    .filter((t) => t.length >= 4)
+}
+
+/** Selecciona hasta `max` minerales mencionados explícitamente en el texto del usuario. */
+function selectMinerals(userText: string, max = 3): Mineral[] {
+  const q = normalize(userText)
+  if (!q) return []
+  const matched: Mineral[] = []
+  for (const m of data.minerals) {
+    if (aliasTokens(m).some((t) => q.includes(t))) {
+      matched.push(m)
+      if (matched.length >= max) break
+    }
+  }
+  return matched
+}
+
+/** FAQ relevante a la consulta (evita mandar las 12 siempre). */
+function selectFaq(userText: string, max = 2) {
+  const words = normalize(userText)
+    .split(/[^a-z0-9]+/)
+    .filter((w) => w.length >= 5)
+  if (!words.length) return []
+  return data.faq
+    .filter((f) => {
+      const fn = normalize(`${f.question} ${f.answer}`)
+      return words.some((w) => fn.includes(w))
+    })
+    .slice(0, max)
+}
+
+/**
+ * Construye la base de conocimiento para el system prompt del GeoBot.
+ *
+ * Estrategia de recuperación (retrieval): en lugar de volcar las ~40 fichas
+ * completas en cada request (que excede el límite de TPM de Groq), se envía:
+ *  - un índice compacto de TODO el catálogo (para que el bot sepa qué existe), y
+ *  - la ficha COMPLETA solo de los minerales mencionados en la consulta,
+ *  - más las tablas/conceptos del curso y la FAQ relevante.
+ */
+export function buildGeoBotKnowledgeBase(userText = ""): string {
   const diagnostic = courseData.diagnosticTables
     .map((t) => {
       if ("content" in t && t.content) {
@@ -45,7 +100,15 @@ export function buildGeoBotKnowledgeBase(): string {
     .map((c) => `**${c.title}:** ${c.content}`)
     .join("\n\n")
 
-  const faq = data.faq.map((f) => `Q: ${f.question}\nA: ${f.answer}`).join("\n\n")
+  const index = data.minerals.map(formatMineralIndex).join("\n")
+
+  const matched = selectMinerals(userText)
+  const fichas = matched.length
+    ? matched.map(formatMineral).join("\n")
+    : "_(El estudiante aún no mencionó un mineral del catálogo. Guía con criterios generales y el índice; cuando nombre uno, dispondrás de su ficha completa.)_"
+
+  const faqSel = selectFaq(userText)
+  const faq = faqSel.map((f) => `Q: ${f.question}\nA: ${f.answer}`).join("\n\n")
 
   return `BASE DE CONOCIMIENTO — ${courseData.source}
 
@@ -54,15 +117,15 @@ Prioriza SIEMPRE esta información (fichas de la cátedra) sobre conocimiento ge
 ## Grupos mineralógicos (curso)
 ${courseData.groups.map((g) => `- ${g.name}: Si:O = ${g.siORatio}`).join("\n")}
 
+## Índice del catálogo (${data.minerals.length} minerales disponibles)
+${index}
+
+## Fichas relevantes a la consulta
+${fichas}
+
 ## Tablas y criterios diagnósticos
 ${diagnostic}
 
 ## Conceptos clave del curso
-${concepts}
-
-## Fichas de minerales (catálogo completo)
-${data.minerals.map(formatMineral).join("\n")}
-
-## Preguntas frecuentes
-${faq}`
+${concepts}${faq ? `\n\n## Preguntas frecuentes relacionadas\n${faq}` : ""}`
 }

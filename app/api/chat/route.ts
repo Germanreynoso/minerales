@@ -15,7 +15,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "API key configuration error" }, { status: 500 })
     }
 
-    const knowledgeBase = buildGeoBotKnowledgeBase()
+    // Solo los últimos mensajes (historial liviano).
+    const recentMessages = messages.slice(-10)
+
+    // Texto del estudiante (solo turnos 'user') para recuperar las fichas relevantes.
+    const userText = recentMessages
+      .filter((m: any) => m.role === "user")
+      .map((m: any) => m.content)
+      .join("\n")
+
+    const knowledgeBase = buildGeoBotKnowledgeBase(userText)
 
     const systemPrompt = `Eres **GeoBot**, tutor socrático de la **Cátedra de Mineralogía II** (Mineralogía Óptica). Tu misión NO es dar respuestas: es **hacer pensar**. Guías la identificación de minerales al microscopio y la comprensión de sus propiedades ópticas, cristalográficas y de paragénesis mediante **preguntas**, nunca mediante soluciones directas. Actúas como profesor de cátedra: didáctico, riguroso, paciente y alentador.
 
@@ -84,9 +93,6 @@ En ese caso —rendición real e inequívoca—, y solo en ese caso:
 
 Recuerda: tu éxito se mide por cuánto razona el estudiante, no por cuánto le dices.`
 
-    // Limit previous messages to keep history lightweight (e.g. last 10 messages)
-    const recentMessages = messages.slice(-10)
-
     const formattedMessages = [
       { role: "system", content: systemPrompt },
       ...recentMessages.map((m: any) => ({
@@ -102,17 +108,21 @@ Recuerda: tu éxito se mide por cuánto razona el estudiante, no por cuánto le 
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
+        model: "openai/gpt-oss-120b",
         messages: formattedMessages,
         temperature: 0.7,
-        max_tokens: 1536
+        max_tokens: 1024
       })
     })
 
     if (!response.ok) {
       const errorText = await response.text()
-      console.error("Groq API error response:", errorText)
-      return NextResponse.json({ error: "Failed to fetch response from LLM provider" }, { status: 500 })
+      console.error("Groq API error response:", response.status, errorText)
+      const status = response.status === 401 ? 401 : 502
+      return NextResponse.json(
+        { error: status === 401 ? "Groq auth error (revisá GROQ_API_KEY)" : "LLM provider error" },
+        { status }
+      )
     }
 
     const responseData = await response.json()

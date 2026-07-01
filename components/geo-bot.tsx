@@ -140,7 +140,9 @@ export function GeoBot({ isOpen, onClose, onOpen }: GeoBotProps) {
       })
 
       if (!response.ok) {
-        throw new Error("API call failed")
+        const errBody = await response.json().catch(() => ({}))
+        console.error("GeoBot API error:", response.status, errBody)
+        throw new Error(errBody.error || `HTTP ${response.status}`)
       }
 
       const data = await response.json()
